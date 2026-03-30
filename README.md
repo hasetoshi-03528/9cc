@@ -1,20 +1,36 @@
-# 9cc
-<p>
-  参考資料:<a href="https://www.sigbus.info/compilerbook">低レイヤを知りたい人のためのCコンパイラ作成入門</a>
-</p>
+# 9cc — C コンパイラ自作（学習用）
 
-![](https://assets.ubuntu.com/v1/8114528b-picto-ubuntu-orange.png)
-&nbsp;
-[at Ubuntu 22.04.1 LTS](https://ubuntu.com/)
-<p>$ cc -o 9cc 9cc.c</p>
-<p>$ ./9cc 123 > tmp.s</p>
-<p>$ cc -o tmp tmp.s</p>
-<p>$ ./tmp</p>
-<p>$ echo $?<br>
-<a>123</a>
-</p>
-<p>$ ./test.sh<br>
-<a>0 => 0</a><br>
-<a>42 => 42</a><br>
-<a>OK</a>
-</p>
+『[低レイヤを知りたい人のためのCコンパイラ作成入門](https://www.sigbus.info/compilerbook)』を参考に、C 言語で C コンパイラを実装しています。
+
+## 実装状況
+
+| 機能 | 状態 |
+|---|---|
+| 字句解析（トークナイザ） | ✅ 実装済み |
+| `+` `-` の四則演算 | ✅ 実装済み |
+| エラー箇所のソース表示 | ✅ 実装済み |
+| `*` `/` 括弧・演算子優先順位 | 🚧 実装中 |
+| 変数・制御構文・関数 | 📋 未実装 |
+
+## 学んだこと
+
+- 字句解析：入力文字列をトークン列に変換するトークナイザの設計
+- 連結リスト：トークンを `Token *next` で繋ぐデータ構造
+- x86-64 アセンブリ出力：`mov`・`add`・`sub`・`ret` を直接生成
+- エラーハンドリング：`va_list` を使ったエラー位置の可視化
+
+## ビルド・実行
+```bash
+# Ubuntu 22.04 LTS
+cc -o 9cc 9cc.c
+./9cc "1+2-3" > tmp.s
+cc -o tmp tmp.s
+./tmp; echo $?   # => 0
+
+./test.sh        # テスト実行
+```
+
+## 動作環境
+
+- Ubuntu 22.04 LTS
+- gcc
